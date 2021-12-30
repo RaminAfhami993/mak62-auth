@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user') 
 
 router.get('/registerPage', (req, res) => {
-    res.render('register')
+    res.render('register', {msg: null})
 });
 
 router.get('/loginPage', (req, res) => {
@@ -14,25 +14,48 @@ router.get('/loginPage', (req, res) => {
 
 router.post('/register', (req, res) => {
     if (!req.body.firstName || !req.body.lastName || !req.body.username || !req.body.password) {
-        return res.status(406).json({msg: 'Not Acceptable'});
+        // return res.status(406).json({msg: 'Not Acceptable'});
+        return res.render('register', {msg: 'Not Acceptable'})
     };
 
-    const NEW_USER = new User({
-        username: req.body.username,
-        lastName: req.body.lastName,
-        firstName: req.body.firstName,
-        password: req.body.password
-    });
+    if (req.body.password.length > 50 || req.body.password.length < 8) {
+        // return res.status(406).json({msg: 'Not Acceptable'});
+        return res.render('register', {msg: 'Not Acceptable'})
+
+    };
 
 
-    NEW_USER.save((err, user) => {
+    User.findOne({username: req.body.username.trim()}, (err, existUser) => {
         if (err) {
-            return res.status(500).json({msg: "Somthing went wrong"})
+            // return res.status(500).json({msg: "Somthing went wrong"})
+            return res.render('register', {msg: 'Somthing went wrong'})
+
         };
 
-        res.json(user)
-    });
+        if (existUser) {
+            // return res.status(406).json({msg: "username already token"})
+            return res.render('register', {msg: 'username already token'})
+
+        };
+
+        const NEW_USER = new User({
+            username: req.body.username,
+            lastName: req.body.lastName,
+            firstName: req.body.firstName,
+            password: req.body.password
+        });
     
+    
+        NEW_USER.save((err, user) => {
+            if (err) {
+                // return res.status(500).json({msg: "Somthing went wrong"})
+                return res.render('register', {msg: 'Somthing went wrong'})
+
+            };
+    
+            res.render('login')
+        });
+    })
 })
 
 module.exports = router;

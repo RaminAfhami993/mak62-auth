@@ -17,24 +17,25 @@
                 <div class="card border-0 shadow rounded-3 my-5">
                     <div class="card-body p-4 p-sm-5">
                         <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
-                        <form>
+                        <span class="text-center mb-5 text-danger fs-5"><%= msg %></span>
+                        <form action="/auth/register" method="POST">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="fistNameInput"
+                                <input name="firstName" type="text" class="form-control" id="fistNameInput"
                                     placeholder="First Name">
                                 <label for="fistNameInput">First Name</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="lastNameInput"
+                                <input type="text" name="lastName" class="form-control" id="lastNameInput"
                                     placeholder="Last Name">
                                 <label for="lastNameInput">Last Name</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="UsernameInput"
+                                <input type="text" name="username" class="form-control" id="UsernameInput"
                                     placeholder="Username">
                                 <label for="UsernameInput">Username</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="paswordInput"
+                                <input type="password" name="password" class="form-control" id="paswordInput"
                                     placeholder="Password">
                                 <label for="paswordInput">Password</label>
                             </div>
