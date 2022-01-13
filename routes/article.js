@@ -29,7 +29,15 @@ router.post('/create', (req, res) => {
 })
 
 
+router.get('/all', (req, res) => {
+    Article.find({}).populate('author', {_id: 0, username: 1, firstName: 1}).exec((err, articles) => {
+        if (err) {
+            return res.status(500).json({msg: "Somthing went wrong"})
+        };
 
+        res.json(articles)
+    })
+})
 
 
 router.get('/:userId', (req, res) => {
@@ -41,5 +49,8 @@ router.get('/:userId', (req, res) => {
         res.json(articles)
     })
 })
+
+
+
 
 module.exports = router;
