@@ -7,7 +7,7 @@ router.get('/registerPage', (req, res) => {
 });
 
 router.get('/loginPage', (req, res) => {
-    res.render('login')
+    res.render('login', {msg: null})
 });
 
 
@@ -53,8 +53,29 @@ router.post('/register', (req, res) => {
 
             };
     
-            res.render('login')
+            res.render('login', {msg: null})
         });
+    })
+});
+
+
+router.post('/login', (req, res) => {
+    if (!req.body.username || !req.body.password) {
+        // return res.status(406).json({msg: 'Not Acceptable'});
+        return res.render('login', {msg: 'Not Acceptable'})
+    };
+
+
+    User.findOne({username: req.body.username, password: req.body.password}, (err, user) => {
+        if (err) {
+            return res.render('login', {msg: 'Somthing went wrong'})
+        } 
+        if (!user) {
+            return res.render('login', {msg: 'Wrong username or password'})
+        }
+
+        res.render('dashboard', user)
+
     })
 })
 
